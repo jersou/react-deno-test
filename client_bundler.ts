@@ -2,10 +2,12 @@
 
 export async function bundleClient() {
   const basePath = import.meta.url.replace(/\/[^/]*.(j|t)sx?$/, "");
+  const protocol = basePath.replace(/^([^:/]+:\/\/).*/, "$1");
   const lib = ["dom", "dom.iterable", "esnext"];
   const [diagnostics, js] = await Deno.bundle(`${basePath}/client.tsx`, undefined, { lib });
   console.log(diagnostics || "[Bundler] : no error ✅");
-  return js;
+  // FIXME: if the bundler is call from github, the bundle is invalid
+  return js.replace('__instantiate("/', `__instantiate("${protocol}`);
 }
 
 if (import.meta.main) {
