@@ -1,13 +1,17 @@
 #!/usr/bin/env -S deno run --allow-net --unstable --allow-read
 
-export async function bundleClient() {
+import terser from "https://dev.jspm.io/terser@5.3.5";
+
+export async function bundleClient(minify?: boolean) {
   const basePath = import.meta.url.replace(/\/[^/]*.(j|t)sx?$/, "");
   const protocol = basePath.replace(/^([^:/]+:\/\/).*/, "$1");
   const lib = ["dom", "dom.iterable", "esnext"];
   const [diagnostics, js] = await Deno.bundle(`${basePath}/client.tsx`, undefined, { lib });
   console.log(diagnostics || "[Bundler] : no error ✅");
   // FIXME: if the bundler is call from github, the bundle is invalid
-  return js.replace('__instantiate("/', `__instantiate("${protocol}`);
+  const jsFix = js.replace('__instantiate("/', `__instantiate("${protocol}`);
+  // @ts-ignore
+  return minify ? (await terser.minify(jsFix)).code : jsFix;
 }
 
 if (import.meta.main) {

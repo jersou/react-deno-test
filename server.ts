@@ -1,8 +1,8 @@
 #!/usr/bin/env -S deno run --allow-net --unstable --allow-read
 
 import { Application } from "https://deno.land/x/oak@v6.3.1/mod.ts";
-import { createRouter } from "./router.ts";
 import { deferred } from "https://deno.land/std@0.74.0/async/deferred.ts";
+import { createRouter } from "./router.ts";
 
 const port = 8000;
 const oakApp = new Application();

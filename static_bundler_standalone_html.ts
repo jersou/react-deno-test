@@ -4,9 +4,7 @@ import { clientHtml } from "./client_html.tsx";
 import { bundleClient } from "./client_bundler.ts";
 
 async function bundle() {
-  await Deno.mkdir("./dist", { recursive: true });
-  await Deno.writeTextFile("dist/index.html", clientHtml());
-  await Deno.writeTextFile("dist/client.js", await bundleClient(true));
+  await Deno.writeTextFile("script.html", clientHtml(await bundleClient(true)));
 }
 
 if (import.meta.main) {

@@ -5,7 +5,7 @@ export function createRouter(jsPromise: Promise<string>) {
   const router = new Router();
 
   router.get("/", async (ctx) => {
-    ctx.response.body = clientHtml;
+    ctx.response.body = clientHtml();
     ctx.response.type = "text/html";
   });
 
